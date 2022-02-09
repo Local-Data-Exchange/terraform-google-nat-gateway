@@ -70,15 +70,13 @@ module "nat-gateway" {
   ssh_source_ranges     = var.ssh_source_ranges
   http_health_check     = var.autohealing_enabled
 
-  rolling_update_policy = [
-    {
-      type                  = "PROACTIVE"
-      minimal_action        = "REPLACE"
-      max_surge_fixed       = 0
-      max_unavailable_fixed = 1
-      min_ready_sec         = 30
-    },
-  ]
+  rolling_update_policy = {
+    type                  = "PROACTIVE"
+    minimal_action        = "REPLACE"
+    max_surge_fixed       = 0
+    max_unavailable_fixed = 1
+    min_ready_sec         = 30
+  }
 
   access_config = {
     nat_ip = element(concat(google_compute_address.default.*.address, data.google_compute_address.default.*.address, list("")), 0)
