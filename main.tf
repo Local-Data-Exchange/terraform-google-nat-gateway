@@ -79,7 +79,7 @@ module "nat-gateway" {
   }
 
   access_config = {
-    nat_ip = element(concat(google_compute_address.default.*.address, data.google_compute_address.default.*.address, tolist("")), 0)
+    nat_ip = element(concat(google_compute_address.default.*.address, data.google_compute_address.default.*.address, tolist([""])), 0)
   }
 }
 
@@ -89,9 +89,9 @@ resource "google_compute_route" "nat-gateway" {
   project                = var.project
   dest_range             = var.dest_range
   network                = data.google_compute_network.network.self_link
-  next_hop_instance      = element(split("/", tostring(element(tolist(module.nat-gateway.instances[0]), 0))), 10)
+  next_hop_instance      = element(split("/", tostring(element(tolist([module.nat-gateway.instances[0]]), 0))), 10)
   next_hop_instance_zone = local.zone
-  tags                   = compact(concat(tolist(local.regional_tag, local.zonal_tag), var.tags))
+  tags                   = compact(concat(tolist([local.regional_tag, local.zonal_tag]), var.tags))
   priority               = var.route_priority
 }
 
@@ -105,7 +105,7 @@ resource "google_compute_firewall" "nat-gateway" {
     protocol = "all"
   }
 
-  source_tags = compact(concat(tolist(local.regional_tag, local.zonal_tag), var.tags))
+  source_tags = compact(concat(tolist([local.regional_tag, local.zonal_tag]), var.tags))
   target_tags = compact(concat(local.instance_tags, var.tags))
 }
 
