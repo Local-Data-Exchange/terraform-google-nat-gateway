@@ -89,7 +89,7 @@ resource "google_compute_route" "nat-gateway" {
   project                = var.project
   dest_range             = var.dest_range
   network                = data.google_compute_network.network.self_link
-  next_hop_instance      = element(split("/", tostring(element(tolist([module.nat-gateway.instances[0]]), 0))), 10)
+  next_hop_instance      = element(split("/", tostring(element(tolist(module.nat-gateway.instances), 0))), 10)
   next_hop_instance_zone = local.zone
   tags                   = compact(concat(tolist([local.regional_tag, local.zonal_tag]), var.tags))
   priority               = var.route_priority
