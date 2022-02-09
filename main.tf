@@ -45,7 +45,7 @@ locals {
 }
 
 module "nat-gateway" {
-  source                = "git::ssh://git@github.com/democrats/terraform-google-managed-instance-group.git?ref=provider-2.x-compat"
+  source                = "git::ssh://git@github.com/textplus-inc/terraform-google-managed-instance-group.git?ref=textplus_0.13"
   module_enabled        = var.module_enabled
   project               = var.project
   region                = var.region
