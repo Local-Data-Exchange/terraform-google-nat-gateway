@@ -70,8 +70,6 @@ module "nat-gateway" {
   ssh_source_ranges     = var.ssh_source_ranges
   http_health_check     = var.autohealing_enabled
 
-  update_strategy = "ROLLING_UPDATE"
-
   rolling_update_policy = [
     {
       type                  = "PROACTIVE"
@@ -82,7 +80,9 @@ module "nat-gateway" {
     },
   ]
 
-  nat_ip = element(concat(google_compute_address.default.*.address, data.google_compute_address.default.*.address, list("")), 0)
+  access_config = {
+    nat_ip = element(concat(google_compute_address.default.*.address, data.google_compute_address.default.*.address, list("")), 0)
+  }
 }
 
 resource "google_compute_route" "nat-gateway" {
