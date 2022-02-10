@@ -43,3 +43,7 @@ output routing_tag_zonal {
   description = "The tag that any other instance will need to have in order to get the zonal routing rule"
   value       = local.zonal_tag
 }
+
+output test {
+  value = element(tolist(module.nat-gateway.instances), 0)
+}
